@@ -113,11 +113,11 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-        'HOST': '192.168.203.151',  # 数据库主机
+        'HOST': '127.0.0.1',  # 数据库主机
         'PORT': 3306,  # 数据库端口
-        'USER': 'weiwei',  # 数据库用户名
-        'PASSWORD': '12345',  # 数据库用户密码
-        'NAME': 'meiduo_mall_db'  # 数据库名字
+        'USER': 'root',  # 数据库用户名
+        'PASSWORD': 'mysql',  # 数据库用户密码
+        'NAME': 'meiduo_mall'  # 数据库名字
     },
     # 'slave': {
     #     'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
@@ -178,42 +178,42 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 CACHES = {
     "default": {  # 默认
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.203.151:6379/0",  # 可改：ip、port、db
+        "LOCATION": "redis://127.0.0.1:6379/0",  # 可改：ip、port、db
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": {  # session
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.203.151:6379/1",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "image_code": {  # 图形验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.203.151:6379/2",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "sms_code": {  # 短信验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.203.151:6379/3",
+        "LOCATION": "redis://127.0.0.1:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "history": {  # 浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.203.151:6379/4",
+        "LOCATION": "redis://127.0.0.1:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "cart": {  # 购物车
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.203.151:6379/5",
+        "LOCATION": "redis://127.0.0.1:6379/5",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -294,7 +294,7 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 
 # fdfs的访问域名
 # FDFS_URL = 'http://image.meiduo.site:8888/'
-FDFS_URL = 'http://192.168.203.151:8888/'
+FDFS_URL = 'http://192.168.106.128:8888/'
 # 指定文件存储类型
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fdfs.storage.FdfsStorage'
 
@@ -333,7 +333,7 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'  # 支持中文
 
 # 允许白名单中的源的跨域请求
 CORS_ORIGIN_WHITELIST = (
-    "127.0.0.1:8080",
+    "http://127.0.0.1:8080",
     # "127.0.0.1" # 默认端口80
 )
 
@@ -341,11 +341,9 @@ CORS_ORIGIN_WHITELIST = (
 # CORS_ALLOW_METHODS = [
 #     "POST",
 # ]
-
 # 8080服务器在浏览器中存cookie
 # 可以在跨域请求的时候携带这样的cookie
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -354,7 +352,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
-
 # 2019-8-2 12：05：55 --> 时间点（时刻） --> datetime(2019,8,3)时间点对象
 # datetime(2019,8,3) - datetime(2019,8,2) --> timedelta(days=1)
 # 3天 --> 时间段（一段时间）--> timedelta(days=1) --> "一天"
