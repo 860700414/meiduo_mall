@@ -161,8 +161,10 @@ USE_I18N = True
 
 USE_L10N = True
 
-# 开启django"时区"功能：保存到数据库中到关于日期到数据，会同一转化成UTC（0时区）时间
+# 开启django"时区"功能：保存到数据库中到关于日期到数据，
+# 会同一转化成UTC（0时区）时间
 USE_TZ = True
+# USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -357,7 +359,9 @@ REST_FRAMEWORK = {
 # 3天 --> 时间段（一段时间）--> timedelta(days=1) --> "一天"
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'meiduo_admin.utils.jwt_response_handlers.customer_jwt_response_handler', # 指明构建响应数据的函数
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+        'meiduo_admin.utils.jwt_response_handlers.customer_jwt_response_handler',
+    # 指明构建响应数据的函数
 }
 
 

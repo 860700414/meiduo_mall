@@ -285,7 +285,6 @@ class AddressCreateView(LoginRequiredMixin, View):
             phone=tel,
             email=email
         )
-
         # 响应
         return http.JsonResponse({
             'code': RETCODE.OK,

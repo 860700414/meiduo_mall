@@ -25,7 +25,7 @@ class MeiduoModelBackend(ModelBackend):
             except:
                 return None
 
-        # 后台管理站点登陆的时候，不会传入request
+        # 后台管理站点登陆  的时候，不会传入request,设置isstaff为0
         if not request and not user.is_staff:
             return None
 

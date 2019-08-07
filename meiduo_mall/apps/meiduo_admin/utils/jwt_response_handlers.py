@@ -1,6 +1,4 @@
 
-
-
 def customer_jwt_response_handler(token, user=None, request=None):
     """
     构造jwt默认视图返回数据格式
