@@ -4,9 +4,13 @@ from rest_framework_jwt.views import obtain_jwt_token
 from meiduo_admin.views.home_views import *
 
 from rest_framework.routers import SimpleRouter
+
+from meiduo_admin.views.spu_views import *
 from meiduo_admin.views.user_views import *
 from meiduo_admin.views.sku_views import *
+from meiduo_admin.views.spec_views import *
 
+from meiduo_admin.views.option_views import *
 urlpatterns = [
     # url(r'^authorizations/$',LoginView.as_view()),
     url(r'^authorizations/$', obtain_jwt_token),
@@ -17,12 +21,36 @@ urlpatterns = [
 
     url(r'^users/$', UserAPIView.as_view()),
 
-    url(r'^skus/$', SKUViewSet.as_view({'get':'list'})),
+    url(r'^skus/$', SKUViewSet.as_view({'get':'list','post':'create'})),
+    url(r'^skus/(?P<pk>\d+)/$', SKUViewSet.as_view({'get':'retrieve',
+                                                    'put':'update',
+                                                    'delete':'destroy'})),
+
     url(r'^skus/categories/$', SKUCategoryView.as_view()),
 
-    url(r'^goods/simple/$', SKUCategoryView.as_view()),
+    url(r'^goods/simple/$', SPUSimpleView.as_view()),
+    url(r'^goods/(?P<pk>\d+)/specs/$', SPUSpecView.as_view()),
+
+    url(r'^goods/$', SPUViewSet.as_view({'get':'list','post':'create'})),
+    url(r'^goods/(?P<pk>\d+)/$', SPUViewSet.as_view({'get':'retrieve','put':'update',
+                                                     'delete':'destroy'})),
+    url(r'^goods/brands/simple/$', BrandsSimpleView.as_view()),
+
+    url(r'^goods/channel/categories/$', GoodsCategorySimpleView.as_view()),
+    url(r'^goods/channel/categories/(?P<pk>\d+)/$', GoodsCategorySimpleView.as_view()),
+
+    url(r'^goods/specs/$', SpecViewSet.as_view({'get':'list','post':'create'})),
+    url(r'^goods/specs/(?P<pk>\d+)/$', SpecViewSet.as_view({'get':'retrieve', 'put':'update',
+                                                            'delete':'destroy'})),
+
+    url(r'^specs/options/$', OptionViewSet.as_view({'get':'list'})),
+    url(r'^specs/options/(?P<pk>\d+)/$', OptionViewSet.as_view({'delete':'destroy'})),
 
 ]
 router = SimpleRouter()
 router.register(prefix='statistical', viewset=HomeView, base_name='home')
+# # SPU
+# router.register(prefix='goods',viewset=SPUViewSet,base_name='spu')
+# # SPEC  发生路由屏蔽
+# router.register(prefix='goods/specs',viewset=SpecViewSet,base_name='specs')
 urlpatterns += router.urls

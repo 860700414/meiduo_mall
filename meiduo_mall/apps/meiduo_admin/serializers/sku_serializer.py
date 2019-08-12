@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from goods.models import SKU, SKUSpecification,GoodsCategory,SPU
+from goods.models import SKU, SKUSpecification, GoodsCategory, SPU,SPUSpecification,SpecificationOption
 
 
 class SKUSpecSimpleSerializer(serializers.ModelSerializer):
@@ -23,9 +23,61 @@ class SKUModelSerializer(serializers.ModelSerializer):
         model = SKU
         fields = "__all__"
 
+    def create(self, validated_data):
+        specs = validated_data.pop('specs')
+        sku=super().create(validated_data)
+        # for spec in specs:
+        #     SKUSpecification.objects.create(sku_id=sku.id,
+        #                                     spec_id=spec['spec_id'],
+        #                                     option_id=spec['option_id'])
+        # return sku
+        for spec in specs:
+            spec['sku_id']=sku.id
+            SKUSpecification.objects.create(**spec)
+        return sku
+
+
+    def update(self, instance, validated_data):
+        specs =validated_data.pop('specs')
+        sku=super().update(instance,validated_data)
+        # 删除原来的中间表数据,
+        # 根据新的specs构建新的中间表数据
+        SKUSpecification.objects.filter(sku_id=sku.id).delete()
+        for spec in specs:
+            spec['sku_id']=sku.id
+            SKUSpecification.objects.update(**spec)
+        return sku
+
+
+
+
 class SKUCategorySimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = GoodsCategory
-        fields = ['id','name']
+        fields = ['id', 'name']
 
+class SPUSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= SPU
+        fields = ['id', 'name']
 
+class SpecOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= SpecificationOption
+        fields=['id','value']
+
+class SPUSpecSerializer(serializers.ModelSerializer):
+
+    spu=serializers.StringRelatedField()
+    spu_id=serializers.IntegerField()
+    options=SpecOptionSerializer(many=True)
+
+    class Meta:
+        model =SPUSpecification
+        fields = [
+            'id',
+            'name',
+            'spu',
+            'spu_id',
+            'options'
+        ]

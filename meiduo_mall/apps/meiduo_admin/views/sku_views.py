@@ -1,10 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
-
-
-from goods.models import SKU,GoodsCategory
+from goods.models import SKU, GoodsCategory, SPU,SPUSpecification,SpecificationOption
 from meiduo_admin.pages import MyPage
-from meiduo_admin.serializers.sku_serializer import SKUModelSerializer,SKUCategorySimpleSerializer
+from meiduo_admin.serializers.sku_serializer import *
 
 
 class SKUViewSet(ModelViewSet):
@@ -13,14 +11,28 @@ class SKUViewSet(ModelViewSet):
     pagination_class = MyPage
 
     def get_queryset(self):
-
-        keyword=self.request.query_params.get('keyword')
+        keyword = self.request.query_params.get('keyword')
         if keyword:
             return self.queryset.filter(name__contains=keyword)
         return self.queryset.all()
+
+
 class SKUCategoryView(ListAPIView):
     queryset = GoodsCategory.objects.filter(parent_id__gt=37)
     serializer_class = SKUCategorySimpleSerializer
 
 
+class SPUSimpleView(ListAPIView):
+    queryset = SPU.objects.all()
+    serializer_class = SPUSimpleSerializer
 
+
+class SPUSpecView(ListAPIView):
+    queryset = SPUSpecification.objects.all()
+    serializer_class = SPUSpecSerializer
+
+    def get_queryset(self):
+        spu_id =self.kwargs.get('pk')
+        if spu_id:
+            return self.queryset.filter(spu_id=spu_id)
+        return self.queryset.all()
