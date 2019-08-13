@@ -9,4 +9,3 @@ class GoodsVisitCountSerializer(serializers.ModelSerializer):
     class Meta:
         model = GoodsVisitCount
         fields = ['category', 'count']
-

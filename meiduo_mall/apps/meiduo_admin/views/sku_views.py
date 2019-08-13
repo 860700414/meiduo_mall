@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView
-from goods.models import SKU, GoodsCategory, SPU,SPUSpecification,SpecificationOption
+from goods.models import SKU, GoodsCategory, SPU, SPUSpecification, SpecificationOption
 from meiduo_admin.pages import MyPage
 from meiduo_admin.serializers.sku_serializer import *
 
@@ -32,7 +32,7 @@ class SPUSpecView(ListAPIView):
     serializer_class = SPUSpecSerializer
 
     def get_queryset(self):
-        spu_id =self.kwargs.get('pk')
+        spu_id = self.kwargs.get('pk')
         if spu_id:
             return self.queryset.filter(spu_id=spu_id)
         return self.queryset.all()

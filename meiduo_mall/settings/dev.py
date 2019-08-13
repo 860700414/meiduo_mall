@@ -374,7 +374,7 @@ JWT_AUTH = {
 
 
 
-
+FDFS_CONF_PATH=os.path.join(BASE_DIR,'client.conf')
 
 
 

@@ -3,6 +3,7 @@ from goods.models import SPUSpecification
 from meiduo_admin.serializers.spec_serializer import *
 from meiduo_admin.pages import MyPage
 
+
 class SpecViewSet(ModelViewSet):
     queryset = SPUSpecification.objects.all()
     serializer_class = SpecSerializer

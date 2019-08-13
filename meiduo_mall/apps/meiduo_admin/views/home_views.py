@@ -129,7 +129,7 @@
 from datetime import timedelta
 
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAdminUser,AllowAny
+from rest_framework.permissions import IsAdminUser, AllowAny
 from users.models import User
 from orders.models import OrderInfo
 
@@ -139,14 +139,67 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-
 from meiduo_admin.serializers.home_serializer import *
 import pytz
 
 
-class HomeView(ViewSet):
+# class HomeView(ViewSet):
+#     permission_classes = [IsAdminUser]
+#
+#     @action(methods=['get'], detail=False)
+#     def total_count(self, request):
+#         count = User.objects.count()
+#         date = timezone.now().date()
+#         return Response({'count': count, 'date': 'date'})
+#
+#     @action(methods=['get'], detail=False)
+#     def day_incrementd(self, request):
+#         cur_date = timezone.now()
+#         shanghai_0_time = cur_date.astimezone(tz=pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0, second=0,
+#                                                                                             microsecond=0)
+#         count = User.objects.filter(date_joined__gte=shanghai_0_time).count()
+#         return Response({'count': count, 'date': shanghai_0_time.date()})
+#
+#     def day_active(self, request):
+#         local_0_date = timezone.now().astimezone(tz=pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0,
+#                                                                                                second=0, microsecond=0)
+#         count = User.objects.filter(last_login__gte=local_0_date).count()
+#         return Response({'count': count, 'date': local_0_date.date()})
+#
+#     @action(methods=['get'], detail=False)
+#     def day_orders(self, request):
+#         local_0_time = timezone.now().astimezone(tz=pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0,
+#                                                                                                second=0, microsecond=0)
+#         # order_queryset=OrderInfo.objects.filter(create_time__gte=local_0_time)
+#         user_queryset = User.objects.filter(orders__create_time__gte=local_0_time)
+#         count = len(set(user_queryset))
+#         return Response({'count': count, 'date': local_0_time.date()})
+#
+#     @action(methods=['get'], detail=False)
+#     def month_increment(self, request):
+#         currentotime = timezone.now().astimezone(tz=pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0,
+#                                                                                                second=0, microsecond=0)
+#         beginotine = currentotime - timedelta(days=29)
+#         cal_list = []
+#         for index in range(30):
+#             calOtime = beginotine + timedelta(days=index)
+#             count = User.objects.filter(date_joined__gte=calOtime, date_joined__lt=calOtime + timedelta(days=1)).count()
+#             cal_list.append({'count': count, 'date': calOtime.date()})
+#             return Response(cal_list)
+#
+# class GoodsVisitCountView(ListAPIView):
+#     permission_classes = [IsAdminUser]
+#     queryset = GoodsVisitCount.objects.all()
+#     serializer_class = GoodsVisitCountSerializer
+#
+#     def get_queryset(self):
+#         curotime = timezone.now().astimezone(pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0, second=0, microsecond=0)
+#         return self.queryset.filter(create_time__gte=curotime)
 
+
+class HomeView(ViewSet):
     permission_classes = [IsAdminUser]
+
     # 重写函数，实现特定接口权限管理
     # def get_permissions(self):
     # #     total_count  IsAdminUser
@@ -154,9 +207,6 @@ class HomeView(ViewSet):
     #         return [IsAdminUser()]
     #     else:
     #         return [AllowAny()]
-
-
-
     @action(methods=['get'], detail=False)
     def total_count(self, request):
         count = User.objects.count()
@@ -168,7 +218,7 @@ class HomeView(ViewSet):
 
     @action(methods=['get'], detail=False)
     def day_increment(self, request):
-        cur_date = timezone.now().astimezone()
+        cur_date = timezone.now()
         shanghai_date = cur_date.astimezone(tz=pytz.timezone(settings.TIME_ZONE))
         shanghai_0_date = shanghai_date.replace(hour=0, minute=0, second=0, microsecond=0)
         count = User.objects.filter(date_joined__gte=shanghai_0_date).count()
@@ -193,8 +243,7 @@ class HomeView(ViewSet):
         # 已知条件，今天零点，，目标数据：用户数量是主表数据
         local_0_time = timezone.now().astimezone(tz=pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0,
                                                                                                second=0, microsecond=0)
-        order_queryset = OrderInfo.objects.filter(create_time__gte=local_0_time)
-        #
+        # order_queryset = OrderInfo.objects.filter(create_time__gte=local_0_time)
         # user_list=[]
         # for order in order_queryset:
         #     user_list.append(order.user)
@@ -209,8 +258,8 @@ class HomeView(ViewSet):
     @action(methods=['get'], detail=False)
     def month_increment(self, request):
         #         dangtian
-        cur_0_time = timezone.now().astimezone(pytz.timezone(
-            settings.TIME_ZONE)).replace(hour=0, minute=0, second=0, microsecond=0)
+        cur_0_time = timezone.now().astimezone(pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0, second=0,
+                                                                                          microsecond=0)
 
         begin_0_time = cur_0_time - timedelta(days=29)
         calc_list = []
@@ -224,29 +273,10 @@ class HomeView(ViewSet):
             })
         return Response(calc_list)
 
-
 class GoodsVisitCountView(ListAPIView):
     permission_classes = [IsAdminUser]
-
     queryset = GoodsVisitCount.objects.all()
     serializer_class = GoodsVisitCountSerializer
     def get_queryset(self):
-        cur_0_time = timezone.now().astimezone(pytz.timezone(
-            settings.TIME_ZONE)).replace(hour=0,minute=0,second=0,microsecond=0)
+        cur_0_time = timezone.now().astimezone(pytz.timezone(settings.TIME_ZONE)).replace(hour=0, minute=0, second=0, microsecond=0)
         return self.queryset.filter(create_time__gte=cur_0_time)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
