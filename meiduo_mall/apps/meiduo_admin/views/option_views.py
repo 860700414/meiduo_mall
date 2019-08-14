@@ -12,5 +12,5 @@ class OptionViewSet(ModelViewSet):
 
 
 class OptSpecView(ListAPIView):
-    queryset = SPUSpecification.objects.all()
+    queryset = SpecificationOption.objects.all()
     serializer_class = OptSpecSimpleSerializer

@@ -24,8 +24,8 @@ class SKUModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        specs=validated_data.pop('specs')
-        sku =super(SKUModelSerializer, self).create(validated_data)
+        specs = validated_data.pop('specs')
+        sku = super(SKUModelSerializer, self).create(validated_data)
         # specs = validated_data.pop('specs')
         # sku = super().create(validated_data)
         # for spec in specs:
@@ -35,12 +35,13 @@ class SKUModelSerializer(serializers.ModelSerializer):
         # return sku
         for spec in specs:
             spec['sku_id'] = sku.id
-            SKUSpecification.objects.create(**spec)
+            SKUSpecification.objects.create(**specs)
         return sku
 
+    #
     def update(self, instance, validated_data):
         specs = validated_data.pop('specs')
-        sku= super(SKUModelSerializer, self).update(instance,validated_data)
+        sku = super(SKUModelSerializer, self).update(instance, validated_data)
         # 删除原来的中间表数据,
         # 根据新的specs构建新的中间表数据
         SKUSpecification.objects.filter(sku_id=sku.id).delete()

@@ -1,0 +1,17 @@
+from rest_framework import serializers
+from django.contrib.auth.models import Permission, ContentType
+
+
+class PermSerializer(serializers.ModelSerializer):
+    # content_type=serializers.StringRelatedField()
+    content_type = serializers.PrimaryKeyRelatedField(queryset=ContentType.objects.all())
+
+    class Meta:
+        model = Permission
+        fields = ['id', 'name', 'codename', 'content_type']
+
+
+class ContentTypeSerializser(serializers.ModelSerializer):
+    class Meta:
+        model = ContentType
+        fields = ['id', 'name']

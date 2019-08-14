@@ -11,7 +11,8 @@ from meiduo_admin.views.spec_views import *
 from meiduo_admin.views.option_views import *
 from meiduo_admin.views.image_views import *
 from meiduo_admin.views.order_views import *
-
+from meiduo_admin.views.perms_views import *
+from meiduo_admin.views.group_views import *
 urlpatterns = [
     # url(r'^authorizations/$',LoginView.as_view()),
     url(r'^authorizations/$', obtain_jwt_token),
@@ -47,13 +48,19 @@ urlpatterns = [
     url(r'^specs/options/(?P<pk>\d+)/$', OptionViewSet.as_view({
         'delete': 'destroy', 'get': 'retrieve', 'put': 'update'})),
     url(r'^goods/specs/simple/$', OptSpecView.as_view()),
-    url(r'^skus/images/$', ImageViewSet.as_view({'get': 'list','post':'create'})),
-    url(r'^skus/images/(?P<pk>\d+)/$', ImageViewSet.as_view({'get':'retrieve',
-                                                             'put':'update','delete':'destroy'})),
+    url(r'^skus/images/$', ImageViewSet.as_view({'get': 'list', 'post': 'create'})),
+    url(r'^skus/images/(?P<pk>\d+)/$', ImageViewSet.as_view({'get': 'retrieve',
+                                                             'put': 'update', 'delete': 'destroy'})),
     url(r'^skus/simple/$', SKUSimpleView.as_view()),
     url(r'^orders/$', OrderInfoView.as_view()),
-
-
+    url(r'^orders/(?P<pk>\d+)/$', OrderInfoDetailView.as_view()),
+    url(r'^orders/(?P<pk>\d+)/status/$', OrderInfoDetailView.as_view()),
+    # 全县处理
+    url(r'^permission/perms/$', PermViewSet.as_view({'get': 'list', 'post': 'create'})),
+    url(r'^permission/content_types/$', PermViewSet.as_view({'get': 'content_types'})),
+    url(r'^permission/perms/(?P<pk>\d+)/$',
+        PermViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
+    url(r'permission/groups/$',GroupViewSet.as_view({'get':'list'}))
 ]
 router = SimpleRouter()
 router.register(prefix='statistical', viewset=HomeView, base_name='home')
