@@ -13,6 +13,7 @@ from meiduo_admin.views.image_views import *
 from meiduo_admin.views.order_views import *
 from meiduo_admin.views.perms_views import *
 from meiduo_admin.views.group_views import *
+
 urlpatterns = [
     # url(r'^authorizations/$',LoginView.as_view()),
     url(r'^authorizations/$', obtain_jwt_token),
@@ -57,10 +58,16 @@ urlpatterns = [
     url(r'^orders/(?P<pk>\d+)/status/$', OrderInfoDetailView.as_view()),
     # 全县处理
     url(r'^permission/perms/$', PermViewSet.as_view({'get': 'list', 'post': 'create'})),
+    # 获取新增全县可选类型
     url(r'^permission/content_types/$', PermViewSet.as_view({'get': 'content_types'})),
     url(r'^permission/perms/(?P<pk>\d+)/$',
         PermViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})),
-    url(r'permission/groups/$',GroupViewSet.as_view({'get':'list'}))
+    # 族管理
+    url(r'permission/groups/$', GroupViewSet.as_view({'get': 'list','post':'create'})),
+    url(r'permission/groups/(?P<pk>\d+)/$',
+        GroupViewSet.as_view({'get': 'retrieve', 'put': 'update','delete':'destroy'})),
+    # 新建分组可选权限
+    url(r'permission/simple/$', PermissionView.as_view()),
 ]
 router = SimpleRouter()
 router.register(prefix='statistical', viewset=HomeView, base_name='home')
