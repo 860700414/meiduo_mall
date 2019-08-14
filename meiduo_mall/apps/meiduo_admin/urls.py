@@ -13,6 +13,8 @@ from meiduo_admin.views.image_views import *
 from meiduo_admin.views.order_views import *
 from meiduo_admin.views.perms_views import *
 from meiduo_admin.views.group_views import *
+from meiduo_admin.views.admin_views import *
+
 
 urlpatterns = [
     # url(r'^authorizations/$',LoginView.as_view()),
@@ -68,6 +70,13 @@ urlpatterns = [
         GroupViewSet.as_view({'get': 'retrieve', 'put': 'update','delete':'destroy'})),
     # 新建分组可选权限
     url(r'permission/simple/$', PermissionView.as_view()),
+    # 超级管理原
+    url(r'permission/admins/$', AdminUserViewSet.as_view({'get':'list','post':'create'})),
+    url(r'permission/admins/(?P<pk>\d+)/$', AdminUserViewSet.as_view({
+        'get':'retrieve','put':'update','delete':'destroy'})),
+    # 获得新建管理员可选分组
+    url(r'permission/groups/simple/$', GroupSimpleView.as_view()),
+
 ]
 router = SimpleRouter()
 router.register(prefix='statistical', viewset=HomeView, base_name='home')
